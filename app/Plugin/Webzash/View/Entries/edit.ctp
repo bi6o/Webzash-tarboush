@@ -360,15 +360,28 @@ $(document).ready(function() {
 	// Purchases properties
 	if ($entrytype['Entrytype']['label'] === 'purchase'){
 		if ($purchases) {
-			foreach ($purchases as $row => $onePurchase) {
 
-				}
+			echo '<table class="stripped extra col-xs-12">';
+			echo '<tr><td>';
+
+			foreach ($purchases as $row => $onePurchase) {
+				echo $this->Form->input('Purchase.' . $row . '.material_type', array('value' => $onePurchase['material_type'],'type' => 'text', 'label' => __d('webzash', 'Material type')));
+				echo $this->Form->input('Purchase.' . $row . '.quantity', array('value' => $onePurchase['quantity'] ,'type' => 'number', 'label' => __d('webzash', 'Quantity')));
+				echo $this->Form->input('Purchase.' . $row . '.price', array('value' => $onePurchase['price'],'type' => 'number', 'label' => __d('webzash', 'Price')));
+				echo $this->Form->input('Purchase.' . $row . '.unit', array('value' => $onePurchase['unit'],'type' => 'text', 'label' => __d('webzash', 'Unit')));
+				echo $this->Form->input('Purchase.' . $row . '.is_cash', array('value' => $onePurchase['is_cash'],'type' => 'checkbox', 'label' => __d('webzash', 'Cash') , 'class' => 'col-xs-0'));
 			}
-		echo $this->Form->input('Purchase.' . $row . '.material_type', array('value' => $onePurchase['material_type'],'type' => 'text', 'label' => __d('webzash', 'Material type')));
-		echo $this->Form->input('Purchase.' . $row . '.quantity', array('value' => $onePurchase['quantity'] ,'type' => 'number', 'label' => __d('webzash', 'Quantity')));
-		echo $this->Form->input('Purchase.' . $row . '.price', array('value' => $onePurchase['price'],'type' => 'number', 'label' => __d('webzash', 'Price')));
-		echo $this->Form->input('Purchase.' . $row . '.is_cash', array('value' => $onePurchase['is_cash'],'type' => 'checkbox', 'label' => __d('webzash', 'Cash') , 'class' => 'col-xs-0'));
+
+			echo '</tr></td>';
+
+			echo '<tr><td>';
+			echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('class' => 'addPurchaseItem', 'escape' => false));
+			echo '</tr></td>';
+
+			echo '</table>';
+		}
 	}
+
 
 	echo $this->Form->input('date', array('type' => 'text', 'label' => __d('webzash', 'Date')));
 

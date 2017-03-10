@@ -96,7 +96,7 @@ if ($purchases){
 
 		echo '<div class="purchase-container col-xs-2">';
 
-		$total += $onePurchase['price'];
+		$total += $onePurchase['price'] * $onePurchase['quantity'];
 
 		echo __d('webzash', 'Material type') . ' : ' . h($onePurchase['material_type']);
 		echo '<br /><br />';
@@ -104,7 +104,10 @@ if ($purchases){
 		echo '<br /><br />';
 		echo __d('webzash', 'Price') . ' : ' . h($onePurchase['price'])  . ' (' . Configure::read('Account.currency_symbol') . ')';
 		echo '<br /><br />';
+		echo __d('webzash', 'Unit') . ' : ' . h($onePurchase['unit']);
+		echo '<br /><br />';
 		echo __d('webzash', 'Cash?') . ' : ' ;
+
 		if (h($onePurchase['is_cash'])){
 			echo "Yes";
 		}

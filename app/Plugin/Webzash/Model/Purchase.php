@@ -119,6 +119,20 @@ class Purchase extends WebzashAppModel {
 				'allowEmpty' => true,
 			),
 		),
+		'unit' => array(
+			'rule1' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Unit cannot be empty',
+				'required' => true,
+				'allowEmpty' => false,
+			),
+			'rule2' => array(
+				'rule' => array('maxLength', 12),
+				'message' => 'Unit length cannot be more than 12',
+				'required' => true,
+				'allowEmpty' => false,
+			),
+		),
 	);
 
 	/**

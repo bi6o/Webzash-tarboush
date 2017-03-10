@@ -139,6 +139,7 @@ class EntriesController extends WebzashAppController {
 					'entry_id' => $data['Purchase']['entry_id'],
 					'material_type' => $data['Purchase']['material_type'],
 					'price' => $data['Purchase']['price'],
+					'unit' => $data['Purchase']['unit'],
 					'quantity' => $data['Purchase']['quantity'],
 					'is_cash' => $data['Purchase']['is_cash'],
 				);
@@ -191,6 +192,7 @@ class EntriesController extends WebzashAppController {
 			$purchasedata['Purchase'][$row]['material_type'] = $newPurchase['material_type'];
 			$purchasedata['Purchase'][$row]['quantity'] = $newPurchase['quantity'];
 			$purchasedata['Purchase'][$row]['price'] = $newPurchase['price'];
+			$purchasedata['Purchase'][$row]['unit'] = $newPurchase['unit'];
 			$purchasedata['Purchase'][$row]['is_cash'] = $newPurchase['is_cash'];
 
 		}
@@ -549,6 +551,7 @@ class EntriesController extends WebzashAppController {
 					'entry_id' => $data['Purchase']['entry_id'],
 					'material_type' => $data['Purchase']['material_type'],
 					'price' => $data['Purchase']['price'],
+					'unit' => $data['Purchase']['unit'],
 					'quantity' => $data['Purchase']['quantity'],
 					'is_cash' => $data['Purchase']['is_cash'],
 				);
@@ -802,6 +805,7 @@ class EntriesController extends WebzashAppController {
 								'material_type' => $entryPurchase['material_type'],
 								'quantity' => $entryPurchase['quantity'],
 								'price' => $entryPurchase['price'],
+								'unit' => $entryPurchase['unit'],
 								'is_cash' => $entryPurchase['is_cash'],
 							)
 						);
@@ -1283,7 +1287,7 @@ class EntriesController extends WebzashAppController {
 		parent::beforeFilter();
 
 		/* Skip the ajax/javascript fields from Security component to prevent request being blackholed */
-		$this->Security->unlockedFields = array('Entryitem' , 'Purchase');
+		$this->Security->unlockedFields = array('Entryitem' , 'Purchase' , 'Sales');
 
 		$this->Security->unlockedActions = array('email');
 
