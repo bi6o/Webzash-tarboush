@@ -28,6 +28,7 @@
 App::uses('WebzashAppController', 'Webzash.Controller');
 App::uses('LedgerTree', 'Webzash.Lib');
 App::uses('Purchase', 'Webzash.Model');
+App::uses('Sale', 'Webzash.Model');
 /**
  * Webzash Plugin Entries Controller
  *
@@ -37,7 +38,7 @@ App::uses('Purchase', 'Webzash.Model');
 class EntriesController extends WebzashAppController {
 
 	public $uses = array('Webzash.Entry', 'Webzash.Group', 'Webzash.Ledger',
-		'Webzash.Entrytype', 'Webzash.Entryitem', 'Webzash.Tag', 'Webzash.Log', 'Webzash.Purchase');
+		'Webzash.Entrytype', 'Webzash.Entryitem', 'Webzash.Tag', 'Webzash.Log', 'Webzash.Purchase', 'Webzash.Sale');
 
 /**
  * index method
@@ -198,6 +199,22 @@ class EntriesController extends WebzashAppController {
 		}
 		return $purchasedata;
 	}
+
+	public function setSaleData(){
+
+		$saleData = null;
+
+		foreach ($this->request->data['Sale'] as $row => $newSale) {
+
+			$saleData['Sale'][$row]['material_type'] = $newSale['material_type'];
+			$saleData['Sale'][$row]['quantity'] = $newSale['quantity'];
+			$saleData['Sale'][$row]['price'] = $newSale['price'];
+			$saleData['Sale'][$row]['unit'] = $newSale['unit'];
+			$saleData['Sale'][$row]['is_cash'] = $newSale['is_cash'];
+
+		}
+		return $saleData;
+	}
 /**
  * add method
  *
@@ -310,6 +327,11 @@ class EntriesController extends WebzashAppController {
 
 				}
 
+				// if purchase entry is being added, set the entity
+				if ($entrytypeLabel === 'sale') {
+					$saleData = $this->setSaleData($entrydata);
+
+				}
 
 				/****** Check entry type *****/
 				$entrydata['Entry']['entrytype_id'] = $entrytype['Entrytype']['id'];
@@ -458,12 +480,28 @@ class EntriesController extends WebzashAppController {
 
 				if ($this->Entry->save($entrydata)) {
 
-					if ($entrytypeLabel == 'purchase') {;
+					if ($entrytypeLabel == 'purchase') {
 						foreach ($purchasedata['Purchase'] as $row => $itemData) {
 							$itemData['entry_id'] = $this->Entry->id;
 							$this->Purchase->create();
 							if (!$this->Purchase->save($itemData)) {
 								foreach ($this->Purchase->validationErrors as $field => $msg) {
+									$errmsg = $msg[0];
+									break;
+								}
+								$ds->rollback();
+								$this->Session->setFlash(__d('webzash', 'Failed to save purchase(s). Error is : %s', $errmsg), 'danger');
+								return;
+							}
+						}
+					}
+
+					if ($entrytypeLabel == 'sale') {
+						foreach ($saleData['Sale'] as $row => $itemData) {
+							$itemData['entry_id'] = $this->Entry->id;
+							$this->Sale->create();
+							if (!$this->Sale->save($itemData)) {
+								foreach ($this->Sale->validationErrors as $field => $msg) {
 									$errmsg = $msg[0];
 									break;
 								}
@@ -546,6 +584,8 @@ class EntriesController extends WebzashAppController {
 		if ($entrytypeLabel == 'purchase') {
 			$purchases = array();
 			$purchasesData = $this->Purchase->find('all' , array('conditions' => array('Purchase.entry_id' => $id)));
+
+
 			foreach ($purchasesData as $row => $data) {
 				$purchases[$row] = array(
 					'entry_id' => $data['Purchase']['entry_id'],
@@ -557,6 +597,24 @@ class EntriesController extends WebzashAppController {
 				);
 			}
 			$this->set('purchases', $purchases);
+
+		}
+
+		// if sale entry then get sales
+		if ($entrytypeLabel == 'sale') {
+				$sales = array();
+				$salesData = $this->Sale->find('all' , array('conditions' => array('Sale.entry_id' => $id)));
+			foreach ($salesData as $row => $data) {
+				$sales[$row] = array(
+					'entry_id' => $data['Sale']['entry_id'],
+					'material_type' => $data['Sale']['material_type'],
+					'price' => $data['Sale']['price'],
+					'unit' => $data['Sale']['unit'],
+					'quantity' => $data['Sale']['quantity'],
+					'is_cash' => $data['Sale']['is_cash'],
+				);
+			}
+			$this->set('sales', $sales);
 
 		}
 
@@ -797,10 +855,11 @@ class EntriesController extends WebzashAppController {
 					}
 				}
 
-				/* Add purchase to entryPurchaseData array if everything is ok */
-				$entryPurchaseData = array();
-				foreach ($this->request->data['Purchase'] as $row => $entryPurchase) {
-					$entryPurchaseData[] = array(
+				if ($entrytypeLabel == 'purchase') {
+					/* Add purchase to entryPurchaseData array if everything is ok */
+					$entryPurchaseData = array();
+					foreach ($this->request->data['Purchase'] as $row => $entryPurchase) {
+						$entryPurchaseData[] = array(
 							'Purchase' => array(
 								'material_type' => $entryPurchase['material_type'],
 								'quantity' => $entryPurchase['quantity'],
@@ -810,6 +869,24 @@ class EntriesController extends WebzashAppController {
 							)
 						);
 
+					}
+				}
+
+				if ($entrytypeLabel == 'sale') {
+					/* Add sale to entrySaleData array if everything is ok */
+					$entrySaleData = array();
+					foreach ($this->request->data['Sale'] as $row => $entrySale) {
+						$entrySaleData[] = array(
+							'Sale' => array(
+								'material_type' => $entrySale['material_type'],
+								'quantity' => $entrySale['quantity'],
+								'price' => $entrySale['price'],
+								'unit' => $entrySale['unit'],
+								'is_cash' => $entrySale['is_cash'],
+							)
+						);
+
+					}
 				}
 				/* Save entry */
 				$ds = $this->Entry->getDataSource();
@@ -839,29 +916,56 @@ class EntriesController extends WebzashAppController {
 						}
 					}
 
-					/* Delete all original entryPurchases */
-					if (!$this->Purchase->deleteAll(array('entry_id' => $id))) {
-						$ds->rollback();
-						$this->Session->setFlash(__d('webzash', 'Previous entry items could not be deleted.'), 'danger');
-						return;
-					}
-
-
-					/* Save new entry purchases */
-					foreach ($entryPurchaseData as $id => $purchaseData) {
-						$purchaseData['Purchase']['entry_id'] = $this->Entry->id;
-						$this->Purchase->create();
-						if (!$this->Purchase->save($purchaseData)) {
-							foreach ($this->Purchase->validationErrors as $field => $msg) {
-								$errmsg = $msg[0];
-								break;
-							}
+					if ($entrytypeLabel == 'purchase') {
+						/* Delete all original entryPurchases */
+						if (!$this->Purchase->deleteAll(array('entry_id' => $id))) {
 							$ds->rollback();
-							$this->Session->setFlash(__d('webzash', 'Failed to save entry Purchases. Error is : %s', $errmsg), 'danger');
+							$this->Session->setFlash(__d('webzash', 'Previous entry items could not be deleted.'), 'danger');
 							return;
+						}
+
+
+						/* Save new entry purchases */
+						foreach ($entryPurchaseData as $id => $purchaseData) {
+							$purchaseData['Purchase']['entry_id'] = $this->Entry->id;
+							$this->Purchase->create();
+							if (!$this->Purchase->save($purchaseData)) {
+								foreach ($this->Purchase->validationErrors as $field => $msg) {
+									$errmsg = $msg[0];
+									break;
+								}
+								$ds->rollback();
+								$this->Session->setFlash(__d('webzash', 'Failed to save entry Purchases. Error is : %s', $errmsg), 'danger');
+								return;
+							}
 						}
 					}
 
+					if ($entrytypeLabel == 'sale') {
+						/* Delete all original entrySales */
+						if (!$this->Sale->deleteAll(array('entry_id' => $id))) {
+							$ds->rollback();
+							$this->Session->setFlash(__d('webzash', 'Previous sale items could not be deleted.'), 'danger');
+							return;
+						}
+
+
+						/* Save new entry sales */
+						foreach ($entrySaleData as $id => $saleData) {
+							$saleData['Sale']['entry_id'] = $this->Entry->id;
+							$this->Sale->create();
+							if (!$this->Sale->save($saleData)) {
+								foreach ($this->Sale->validationErrors as $field => $msg) {
+									$errmsg = $msg[0];
+									break;
+								}
+								$ds->rollback();
+								$this->Session->setFlash(__d('webzash', 'Failed to save entry Purchases. Error is : %s', $errmsg), 'danger');
+								return;
+							}
+						}
+
+					}
 					$tempentry = $this->Entry->read(null, $this->Entry->id);
 					if (!$tempentry) {
 						$this->Session->setFlash(__d('webzash', 'Oh snap ! Failed to update entry. Please, try again.'), 'danger');
@@ -1283,11 +1387,19 @@ class EntriesController extends WebzashAppController {
 		$this->set('purchase_options', $purchase->purchaseList);
 	}
 
+	function addSaleItem() {
+		$this->layout = null;
+
+		$sale = new Sale();
+		$sale_disabled = array();
+		$this->set('sale_options', $sale->saleList);
+	}
+
 	public function beforeFilter() {
 		parent::beforeFilter();
 
 		/* Skip the ajax/javascript fields from Security component to prevent request being blackholed */
-		$this->Security->unlockedFields = array('Entryitem' , 'Purchase' , 'Sales');
+		$this->Security->unlockedFields = array('Entryitem' , 'Purchase' , 'Sale');
 
 		$this->Security->unlockedActions = array('email');
 

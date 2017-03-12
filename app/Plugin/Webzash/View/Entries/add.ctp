@@ -30,6 +30,16 @@
 
 $(document).ready(function() {
 
+	/* function that adds numbers from purchases and adds them to legder Dr and Cr */
+
+	<?php if ($entrytype['Entrytype']['label'] === 'purchase'){ ?>
+
+	var calcualtePurchasesPrice = function() {
+		console.log($('#quantity').data('Purchase'));
+	}
+
+	<?php } ?>
+
 	/* javascript floating point operations */
 	var jsFloatOps = function(param1, param2, op) {
 		<?php if (Configure::read('Account.decimal_places') == 2) { ?>
@@ -267,7 +277,46 @@ $(document).ready(function() {
 		$('.cr-item:first').trigger('change');
 	});
 
-	/* Add ledger row */
+	$(document).on('click', '.deletePurchaseRow , .deleteSaleRow', function() {
+		$(this).parent().parent().remove();
+	});
+
+	$(document).on('ready' , function() {
+
+	});
+
+	$('body').on('input', '.quantity , .price' , function() {
+
+		var quantityList = [];
+		var priceList = [];
+		var totalList = [];
+
+		$('.quantity').each(function(i, obj) {
+			quantityList[i] = parseInt(obj.value);
+		});
+
+		$('.price').each(function(i, obj) {
+			priceList[i] = parseFloat(obj.value);
+		});
+
+		for (i = 0; i< quantityList.length ; i++){
+			if (quantityList[i] * priceList[i] != 'NaN' ) {
+				totalList[i]= quantityList[i] * priceList[i] || 0;
+			}
+		}
+
+		var total = totalList.reduce(add , 0)
+
+		$('#Entryitem0DrAmount').val(total);
+		$('#Entryitem1CrAmount').val(total);
+
+	});
+
+	function add(a, b){
+		return a + b;
+	}
+
+	/* Add Purchase form */
 	$(document).on('click', '.addPurchaseItem', function() {
 		var cur_obj = this;
 		$.ajax({
@@ -276,7 +325,23 @@ $(document).ready(function() {
 				$(cur_obj).after(data);
 			}
 		});
+
+
 	});
+
+	/* Add Sale form */
+	$(document).on('click', '.addSaleItem', function() {
+		var cur_obj = this;
+		$.ajax({
+			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "addSaleItem")); ?>',
+			success: function(data) {
+				$(cur_obj).after(data);
+			}
+		});
+
+
+	});
+
 
 	/* On page load initiate all triggers */
 	$('.dc-dropdown').trigger('change');
@@ -351,21 +416,55 @@ $(document).ready(function() {
 		'afterInput' => $suffixNumber,
 	));
 
-	// Purchase properties
+	// Purchases table
 	if ($entrytype['Entrytype']['label'] === 'purchase'){
-		echo '<table class="stripped extra col-xs-12">';
-		echo '<tr><td>';
+		echo '<table class="stripped col-xs-12">';
+
+		echo '<tr>';
+		echo '<th>Material type</th>';
+		echo '<th>Quantity</th>';
+		echo '<th>Price</th>';
+		echo '<th>Unit</th>';
+		echo '<th>Cash/Bank</th>';
+		echo '<th></th>';
+		echo '</tr>';
 
 		include('add_purchase_item.ctp');
 
-		echo '</tr></td>';
-
-		echo '<tr><td>';
-		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('class' => 'addPurchaseItem', 'escape' => false));
-		echo '</tr></td>';
+		echo '<tr class="addPurchaseItem">';
+		echo '<td>';
+		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('escape' => false));
+		echo '</td>';
+		echo '</tr>';
+		echo '</table>';
 
 	}
-	echo '</table>';
+
+
+	// Sales table
+	if ($entrytype['Entrytype']['label'] === 'sale'){
+		echo '<table class="stripped col-xs-12">';
+
+		echo '<tr>';
+		echo '<th>Material type</th>';
+		echo '<th>Quantity</th>';
+		echo '<th>Price</th>';
+		echo '<th>Unit</th>';
+		echo '<th>Cash/Bank</th>';
+		echo '<th></th>';
+		echo '</tr>';
+
+		include('add_sale_item.ctp');
+
+		echo '<tr class="addSaleItem"><td>';
+
+		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('escape' => false));
+		echo '</tr></td>';
+
+		echo '</table>';
+
+	}
+
 	echo $this->Form->input('date', array('type' => 'text', 'label' => __d('webzash', 'Date')));
 
 	echo '<table class="stripped extra">';

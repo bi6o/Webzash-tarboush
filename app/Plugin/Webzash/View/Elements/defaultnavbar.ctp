@@ -48,7 +48,7 @@
 				<li><?php echo $this->Html->link(__d('webzash', 'Dashboard'), array('plugin' => 'webzash', 'controller' => 'dashboard', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link(__d('webzash', 'Accounts'), array('plugin' => 'webzash', 'controller' => 'accounts', 'action' => 'show')); ?></li>
 
-				<li><?php echo $this->Html->link(__d('webzash', 'Purchases'), array('plugin' => 'webzash', 'controller' => 'accounts', 'action' => 'show')); ?></li>
+				<li><?php echo $this->Html->link(__d('webzash', 'Stock'), array('plugin' => 'webzash', 'controller' => 'stock', 'action' => 'show')); ?></li>
 
 
 				<li><?php echo '<li>' . $this->Html->link(__d('webzash', 'Entries'), array('plugin' => 'webzash', 'controller' => 'entries', 'action' => 'index')); ?></li>

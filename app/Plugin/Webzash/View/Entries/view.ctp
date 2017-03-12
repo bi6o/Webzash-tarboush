@@ -86,7 +86,7 @@ $(document).ready(function() {
 	echo '<br /><br />';
 
 
-if ($purchases){
+if (isset($purchases)) {
 	$total = 0.00;
 
 	echo '<div class="purchase-list col-xs-12 border">';
@@ -123,11 +123,46 @@ if ($purchases){
 
 	echo '</div>';
 
-	echo __d('webzash', 'Total') . ' : ' . h($total) . ' (' . Configure::read('Account.currency_symbol') . ')';
-
-	echo '<br /><br />';
 }
 
+if (isset($sales)){
+	$total = 0.00;
+
+	echo '<div class="purchase-list col-xs-12 border">';
+
+	/* Purchases list */
+	foreach ($sales as $row => $oneSale) {
+
+		echo '<div class="purchase-container col-xs-2">';
+
+		$total += $oneSale['price'] * $oneSale['quantity'];
+
+		echo __d('webzash', 'Material type') . ' : ' . h($oneSale['material_type']);
+		echo '<br /><br />';
+		echo __d('webzash', 'Quantity') . ' : ' . h($oneSale['quantity']);
+		echo '<br /><br />';
+		echo __d('webzash', 'Price') . ' : ' . h($oneSale['price'])  . ' (' . Configure::read('Account.currency_symbol') . ')';
+		echo '<br /><br />';
+		echo __d('webzash', 'Unit') . ' : ' . h($oneSale['unit']);
+		echo '<br /><br />';
+		echo __d('webzash', 'Cash?') . ' : ' ;
+
+		if (h($oneSale['is_cash'])){
+			echo "Yes";
+		}
+		else {
+			echo "No";
+		}
+		echo '<br /><br />';
+
+		echo '</div>';
+
+	}
+	echo '<br /><br />';
+
+	echo '</div>';
+
+}
 
 	echo '<table class="stripped">';
 
