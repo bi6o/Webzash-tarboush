@@ -30,16 +30,6 @@
 
 $(document).ready(function() {
 
-	/* function that adds numbers from purchases and adds them to legder Dr and Cr */
-
-	<?php if ($entrytype['Entrytype']['label'] === 'purchase'){ ?>
-
-	var calcualtePurchasesPrice = function() {
-		console.log($('#quantity').data('Purchase'));
-	}
-
-	<?php } ?>
-
 	/* javascript floating point operations */
 	var jsFloatOps = function(param1, param2, op) {
 		<?php if (Configure::read('Account.decimal_places') == 2) { ?>
@@ -281,10 +271,6 @@ $(document).ready(function() {
 		$(this).parent().parent().remove();
 	});
 
-	$(document).on('ready' , function() {
-
-	});
-
 	$('body').on('input', '.quantity , .price' , function() {
 
 		var quantityList = [];
@@ -421,6 +407,7 @@ $(document).ready(function() {
 		echo '<table class="stripped col-xs-12">';
 
 		echo '<tr>';
+		echo '<th>Material name</th>';
 		echo '<th>Material type</th>';
 		echo '<th>Quantity</th>';
 		echo '<th>Price</th>';
@@ -446,6 +433,7 @@ $(document).ready(function() {
 		echo '<table class="stripped col-xs-12">';
 
 		echo '<tr>';
+		echo '<th>Material name</th>';
 		echo '<th>Material type</th>';
 		echo '<th>Quantity</th>';
 		echo '<th>Price</th>';

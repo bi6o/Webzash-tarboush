@@ -133,6 +133,14 @@ class Sale extends WebzashAppModel {
 				'allowEmpty' => false,
 			),
 		),
+		'material_name' => array(
+			'rule1' => array(
+				'rule' => array('maxLength', 100),
+				'message' => 'Material name length cannot be more than 100',
+				'required' => true,
+				'allowEmpty' => false,
+			),
+		),
 	);
 
 	/**

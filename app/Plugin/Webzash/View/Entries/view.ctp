@@ -98,6 +98,9 @@ if (isset($purchases)) {
 
 		$total += $onePurchase['price'] * $onePurchase['quantity'];
 
+		echo __d('webzash', 'Material name') . ' : ' . h($onePurchase['material_name']);
+		echo '<br /><br />';
+
 		echo __d('webzash', 'Material type') . ' : ' . h($onePurchase['material_type']);
 		echo '<br /><br />';
 		echo __d('webzash', 'Quantity') . ' : ' . h($onePurchase['quantity']);
@@ -136,6 +139,9 @@ if (isset($sales)){
 		echo '<div class="purchase-container col-xs-2">';
 
 		$total += $oneSale['price'] * $oneSale['quantity'];
+
+		echo __d('webzash', 'Material name') . ' : ' . h($oneSale['material_name']);
+		echo '<br /><br />';
 
 		echo __d('webzash', 'Material type') . ' : ' . h($oneSale['material_type']);
 		echo '<br /><br />';

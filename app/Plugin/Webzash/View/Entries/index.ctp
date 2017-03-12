@@ -27,17 +27,17 @@
 ?>
 
 <script type="text/javascript">
-$(document).ready(function() {
-	$("#EntryShow").change(function() {
-	     this.form.submit();
-	});
+	$(document).ready(function() {
+		$("#EntryShow").change(function() {
+			this.form.submit();
+		});
 
-	var entryId = 0;
-	$("button#send").click(function() {
-		$(".modal-body").hide();
-		$(".modal-footer").hide();
-		$(".modal-ajax").show();
-		$.ajax({
+		var entryId = 0;
+		$("button#send").click(function() {
+			$(".modal-body").hide();
+			$(".modal-footer").hide();
+			$(".modal-ajax").show();
+			$.ajax({
 			type: "POST",
 			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "email")); ?>/' + entryId,
 			data: $('form#emailSubmit').serialize(),
