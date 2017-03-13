@@ -402,6 +402,12 @@ $(document).ready(function() {
 		'afterInput' => $suffixNumber,
 	));
 
+	if ($entrytype['Entrytype']['label'] === 'purchase' || $entrytype['Entrytype']['label'] === 'sale') {
+		echo $this->Form->input('warehouse', array(
+			'label' => array('text' => __d('webzash', 'Warehouse')),
+		));
+	}
+
 	// Purchases table
 	if ($entrytype['Entrytype']['label'] === 'purchase'){
 		echo '<table class="stripped col-xs-12">';
@@ -412,7 +418,6 @@ $(document).ready(function() {
 		echo '<th>Quantity</th>';
 		echo '<th>Price</th>';
 		echo '<th>Unit</th>';
-		echo '<th>Cash/Bank</th>';
 		echo '<th></th>';
 		echo '</tr>';
 
@@ -438,7 +443,6 @@ $(document).ready(function() {
 		echo '<th>Quantity</th>';
 		echo '<th>Price</th>';
 		echo '<th>Unit</th>';
-		echo '<th>Cash/Bank</th>';
 		echo '<th></th>';
 		echo '</tr>';
 

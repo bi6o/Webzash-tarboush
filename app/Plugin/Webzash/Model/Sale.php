@@ -111,14 +111,6 @@ class Sale extends WebzashAppModel {
 				'allowEmpty' => false,
 			),
 		),
-		'is_cash' => array(
-			'rule1' => array(
-				'rule' => 'boolean',
-				'message' => 'Cash is a boolean value',
-				'required' => true,
-				'allowEmpty' => true,
-			),
-		),
 		'unit' => array(
 			'rule1' => array(
 				'rule' => 'notEmpty',

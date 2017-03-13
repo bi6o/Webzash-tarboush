@@ -412,7 +412,6 @@ $(document).ready(function() {
 				'</span></div>';
 	}
 
-
 	echo $this->Form->input('number', array(
 		'label' => array('text' => __d('webzash', 'Number')),
 		'beforeInput' =>  $prefixNumber,
@@ -420,6 +419,11 @@ $(document).ready(function() {
 	));
 
 	if ($entrytype['Entrytype']['label'] === 'purchase' || $entrytype['Entrytype']['label'] === 'sale' ){
+
+		echo $this->Form->input('warehouse', array(
+			'label' => array('text' => __d('webzash', 'Warehouse')),
+		));
+
 		echo '<table class="stripped extra col-xs-12">';
 		echo '<th>Material name</th>';
 		echo '<th>Material type</th>';
@@ -456,10 +460,6 @@ $(document).ready(function() {
 
 				echo '<td>';
 				echo $this->Form->input('Purchase.' . $row . '.unit', array('value' => $onePurchase['unit'],'type' => 'text', 'label' => __d('webzash', ' ')));
-				echo '</td>';
-
-				echo '<td>';
-				echo $this->Form->input('Purchase.' . $row . '.is_cash', array('value' => $onePurchase['is_cash'],'type' => 'checkbox' , 'class' => 'col-xs-0', 'label' => __d('webzash', ' ')));
 				echo '</td>';
 
 				echo '<td>';
@@ -502,10 +502,6 @@ if ($entrytype['Entrytype']['label'] === 'sale'){
 
 			echo '<td>';
 			echo $this->Form->input('Sale.' . $row . '.unit', array('value' => $oneSale['unit'],'type' => 'text', 'label' => __d('webzash', ' ')));
-			echo '</td>';
-
-			echo '<td>';
-			echo $this->Form->input('Sale.' . $row . '.is_cash', array('value' => $oneSale['is_cash'],'type' => 'checkbox' , 'class' => 'col-xs-0', 'label' => __d('webzash', ' ')));
 			echo '</td>';
 
 			echo '<td>';

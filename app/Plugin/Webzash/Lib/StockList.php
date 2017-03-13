@@ -32,6 +32,7 @@ class StockList
 {
 	var $Sale = null;
 	var $Purchase = null;
+	var $Entry = null;
 	var $list = [];
 
 
@@ -54,6 +55,8 @@ class StockList
 
 
 		foreach ($purchases as $purchase) {
+			$entry = $this->Entry->findById($purchase['Purchase']['entry_id']);
+
 			$flag = 0;
 			foreach ($sales as $sale) {
 				if ($purchase['Purchase']['material_name'] == $sale['Sale']['material_name'] && $purchase['Purchase']['material_type'] == $sale['Sale']['material_type'] ) {
@@ -72,8 +75,9 @@ class StockList
 
 
 			}
-			$stockList[] = ['material_name' => $materialName, 'material_type' => $materialType ,'quantity' =>  $quantity];
+			$stockList[] = ['material_name' => $materialName, 'material_type' => $materialType ,'quantity' =>  $quantity , 'warehouse' => $entry['Entry']['warehouse']];
 		}
+
 		$this->list = $stockList;
 		return $this;
 

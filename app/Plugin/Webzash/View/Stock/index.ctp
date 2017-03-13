@@ -73,6 +73,7 @@
 		echo '<td>' . $stockRow['material_name'] . '</td>';
 		echo '<td>' . $stockRow['material_type'] . '</td>';
 		echo '<td>' . $stockRow['quantity'] . '</td>';
+		echo '<td>' . $stockRow['warehouse'] . '</td>';
 		echo '<td></td>';
 
 	}

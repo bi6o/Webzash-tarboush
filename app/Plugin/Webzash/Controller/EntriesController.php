@@ -143,7 +143,6 @@ class EntriesController extends WebzashAppController {
 					'price' => $data['Purchase']['price'],
 					'unit' => $data['Purchase']['unit'],
 					'quantity' => $data['Purchase']['quantity'],
-					'is_cash' => $data['Purchase']['is_cash'],
 				);
 			}
 			$this->set('purchases', $purchases);
@@ -162,7 +161,6 @@ class EntriesController extends WebzashAppController {
 					'price' => $data['Sale']['price'],
 					'unit' => $data['Sale']['unit'],
 					'quantity' => $data['Sale']['quantity'],
-					'is_cash' => $data['Sale']['is_cash'],
 				);
 			}
 			$this->set('sales', $sales);
@@ -214,7 +212,6 @@ class EntriesController extends WebzashAppController {
 			$purchasedata['Purchase'][$row]['quantity'] = $newPurchase['quantity'];
 			$purchasedata['Purchase'][$row]['price'] = $newPurchase['price'];
 			$purchasedata['Purchase'][$row]['unit'] = $newPurchase['unit'];
-			$purchasedata['Purchase'][$row]['is_cash'] = $newPurchase['is_cash'];
 
 
 		}
@@ -231,7 +228,6 @@ class EntriesController extends WebzashAppController {
 			$saleData['Sale'][$row]['quantity'] = $newSale['quantity'];
 			$saleData['Sale'][$row]['price'] = $newSale['price'];
 			$saleData['Sale'][$row]['unit'] = $newSale['unit'];
-			$saleData['Sale'][$row]['is_cash'] = $newSale['is_cash'];
 
 		}
 
@@ -346,14 +342,14 @@ class EntriesController extends WebzashAppController {
 				// if purchase entry is being added, set the entity
 				if ($entrytypeLabel === 'purchase') {
 					$purchasedata = $this->setPurchaseData($entrydata);
-
 				}
 
 				// if purchase entry is being added, set the entity
 				if ($entrytypeLabel === 'sale') {
 					$saleData = $this->setSaleData($entrydata);
-
-
+				}
+				if ($entrytypeLabel === 'sale' || $entrytypeLabel === 'purchase') {
+					$entrydata['Entry']['warehouse'] = $this->request->data['Entry']['warehouse'];
 				}
 
 				/****** Check entry type *****/
@@ -617,7 +613,6 @@ class EntriesController extends WebzashAppController {
 					'price' => $data['Purchase']['price'],
 					'unit' => $data['Purchase']['unit'],
 					'quantity' => $data['Purchase']['quantity'],
-					'is_cash' => $data['Purchase']['is_cash'],
 				);
 			}
 			$this->set('purchases', $purchases);
@@ -636,7 +631,6 @@ class EntriesController extends WebzashAppController {
 					'price' => $data['Sale']['price'],
 					'unit' => $data['Sale']['unit'],
 					'quantity' => $data['Sale']['quantity'],
-					'is_cash' => $data['Sale']['is_cash'],
 				);
 			}
 			$this->set('sales', $sales);
@@ -740,6 +734,12 @@ class EntriesController extends WebzashAppController {
 
 				/***** Entry number ******/
 				$entrydata['Entry']['number'] = $this->request->data['Entry']['number'];
+
+				if ($entrytypeLabel == 'purchase' || $entrytypeLabel == 'sale') {
+
+					/***** Entry warehouse ******/
+					$entrydata['Entry']['warehouse'] = $this->request->data['Entry']['warehouse'];
+				}
 
 				/****** Entrytype remains the same *****/
 				$entrydata['Entry']['entrytype_id'] = $entrytype['Entrytype']['id'];
@@ -891,7 +891,6 @@ class EntriesController extends WebzashAppController {
 								'quantity' => $entryPurchase['quantity'],
 								'price' => $entryPurchase['price'],
 								'unit' => $entryPurchase['unit'],
-								'is_cash' => $entryPurchase['is_cash'],
 							)
 						);
 
@@ -910,7 +909,6 @@ class EntriesController extends WebzashAppController {
 									'quantity' => $entrySale['quantity'],
 									'price' => $entrySale['price'],
 									'unit' => $entrySale['unit'],
-									'is_cash' => $entrySale['is_cash'],
 								)
 							);
 

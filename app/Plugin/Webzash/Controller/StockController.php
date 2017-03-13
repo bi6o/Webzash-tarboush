@@ -36,7 +36,7 @@ App::uses('StockList', 'Webzash.Lib');
  */
 class StockController extends WebzashAppController {
 
-	public $uses = array('Webzash.Sale', 'Webzash.Purchase');
+	public $uses = array('Webzash.Sale', 'Webzash.Purchase', 'Webzash.Entry');
 
 /**
  * index method
@@ -59,6 +59,7 @@ class StockController extends WebzashAppController {
 		$stock = new StockList();
 		$stock->Sale = &$this->Sale;
 		$stock->Purchase = &$this->Purchase;
+		$stock->Entry = &$this->Entry;
 		$stock->initiateStock();
 		$this->set('stock', $stock);
 

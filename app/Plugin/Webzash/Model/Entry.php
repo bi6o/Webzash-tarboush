@@ -104,6 +104,14 @@ class Entry extends WebzashAppModel {
 				'allowEmpty' => true,
 			),
 		),
+		'warehouse' => array(
+			'rule1' => array(
+				'rule' => array('maxLength', 100),
+				'message' => 'Warehouse length cannot be more than 100',
+				'required' => true,
+				'allowEmpty' => true,
+			),
+		),
 		'date' => array(
 			'rule1' => array(
 				'rule' => 'fullDateTime',

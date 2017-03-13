@@ -82,6 +82,8 @@ $(document).ready(function() {
 <?php
 	echo __d('webzash', 'Number') . ' : ' . h(toEntryNumber($entry['Entry']['number'], $entry['Entry']['entrytype_id']));
 	echo '<br /><br />';
+	echo __d('webzash', 'Warehouse') . ' : ' . h(toEntryNumber($entry['Entry']['warehouse'], $entry['Entry']['entrytype_id']));
+	echo '<br /><br />';
 	echo __d('webzash', 'Date') . ' : ' . h(dateFromSql($entry['Entry']['date']));
 	echo '<br /><br />';
 
@@ -108,15 +110,6 @@ if (isset($purchases)) {
 		echo __d('webzash', 'Price') . ' : ' . h($onePurchase['price'])  . ' (' . Configure::read('Account.currency_symbol') . ')';
 		echo '<br /><br />';
 		echo __d('webzash', 'Unit') . ' : ' . h($onePurchase['unit']);
-		echo '<br /><br />';
-		echo __d('webzash', 'Cash?') . ' : ' ;
-
-		if (h($onePurchase['is_cash'])){
-			echo "Yes";
-		}
-		else {
-			echo "No";
-		}
 		echo '<br /><br />';
 
 		echo '</div>';
@@ -150,15 +143,6 @@ if (isset($sales)){
 		echo __d('webzash', 'Price') . ' : ' . h($oneSale['price'])  . ' (' . Configure::read('Account.currency_symbol') . ')';
 		echo '<br /><br />';
 		echo __d('webzash', 'Unit') . ' : ' . h($oneSale['unit']);
-		echo '<br /><br />';
-		echo __d('webzash', 'Cash?') . ' : ' ;
-
-		if (h($oneSale['is_cash'])){
-			echo "Yes";
-		}
-		else {
-			echo "No";
-		}
 		echo '<br /><br />';
 
 		echo '</div>';

@@ -25,10 +25,6 @@ echo $this->Form->input('unit', array('name' => 'data[Sale]['. $i .'][unit]' ,'c
 echo '</td>';
 
 echo '<td>';
-echo $this->Form->input('is_cash', array('name' => 'data[Sale]['.$i.'][is_cash]' ,'class'=> 'form-control is_cash','type' => 'checkbox', 'label' => __d('webzash', ' ') , 'class' => 'col-xs-0'));
-echo '</td>';
-
-echo '<td>';
 echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-trash')) . __d('webzash', ' Delete'), array('class' => 'deleteSaleRow', 'escape' => false));
 echo '</td>';
 
