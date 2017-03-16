@@ -13,16 +13,21 @@ echo $this->Form->input('material_type', array('name' => 'data[Sale]['.$i.'][mat
 echo '</td>';
 
 echo '<td>';
-echo $this->Form->input('quantity', array('name' => 'data[Sale]['.$i.'][quantity]' ,'class'=> 'form-control quantity','type' => 'float', 'label' => __d('webzash', ' ')));
+echo $this->Form->input('quantity', array('name' => 'data[Sale]['.$i.'][quantity]' , 'data-id' => $i ,'class'=> 'form-control quantity','type' => 'number', 'label' => __d('webzash', ' ')));
 echo '</td>';
 
 echo '<td>';
-echo $this->Form->input('price', array('name' => 'data[Sale]['.$i.'][price]' ,'class'=> 'form-control price','type' => 'number', 'label' => __d('webzash', ' ')));
+echo $this->Form->input('price', array('name' => 'data[Sale]['.$i.'][price]', 'data-id' => $i ,'class'=> 'form-control price','type' => 'float', 'label' => __d('webzash', ' ')));
 echo '</td>';
 
 echo '<td>';
 echo $this->Form->input('unit', array('name' => 'data[Sale]['. $i .'][unit]' ,'class'=> 'form-control unit', 'type' => 'text', 'label' => __d('webzash', ' ')));
 echo '</td>';
+
+echo '<td>';
+echo '<label data-id='.$i.' class="material-total"></label>';
+echo '</td>';
+
 
 echo '<td>';
 echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-trash')) . __d('webzash', ' Delete'), array('class' => 'deleteSaleRow', 'escape' => false));

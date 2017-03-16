@@ -271,8 +271,7 @@ $(document).ready(function() {
 		$(this).parent().parent().remove();
 	});
 
-	$('body').on('input', '.quantity , .price' , function() {
-
+	calculateAllMaterialsTotal = function () {
 		var quantityList = [];
 		var priceList = [];
 		var totalList = [];
@@ -292,9 +291,32 @@ $(document).ready(function() {
 		}
 
 		var total = totalList.reduce(add , 0)
+		return total;
+	}
 
-		$('#Entryitem0DrAmount').val(total);
-		$('#Entryitem1CrAmount').val(total);
+
+	var calculateOneMaterialTotal = function (rowId) {
+		var materialTotal = $('.price[data-id=' + rowId + ']').val() * $('.quantity[data-id=' + rowId + ']').val();
+
+		if (materialTotal == 'NaN'){
+			materialTotal = 0;
+		}
+		return materialTotal;
+	}
+
+
+	$('body').on('input', '.quantity , .price' , function() {
+
+		var rowId = $(this).attr('data-id');
+
+		materialTotal = calculateOneMaterialTotal(rowId);
+
+		$('.material-total[data-id=' + rowId + ']').text(materialTotal);
+
+		var totalAll = calculateAllMaterialsTotal();
+
+		$('#Entryitem0DrAmount').val(totalAll);
+		$('#Entryitem1CrAmount').val(totalAll);
 
 	});
 
@@ -408,8 +430,7 @@ $(document).ready(function() {
 		));
 	}
 
-	// Purchases table
-	if ($entrytype['Entrytype']['label'] === 'purchase'){
+	if ($entrytype['Entrytype']['label'] === 'purchase' || $entrytype['Entrytype']['label'] === 'sale'){
 		echo '<table class="stripped col-xs-12">';
 
 		echo '<tr>';
@@ -418,8 +439,13 @@ $(document).ready(function() {
 		echo '<th>Quantity</th>';
 		echo '<th>Price</th>';
 		echo '<th>Unit</th>';
+		echo '<th>Total</th>';
 		echo '<th></th>';
 		echo '</tr>';
+	}
+
+	// Purchases table
+	if ($entrytype['Entrytype']['label'] === 'purchase'){
 
 		include('add_purchase_item.ctp');
 
@@ -435,16 +461,6 @@ $(document).ready(function() {
 
 	// Sales table
 	if ($entrytype['Entrytype']['label'] === 'sale'){
-		echo '<table class="stripped col-xs-12">';
-
-		echo '<tr>';
-		echo '<th>Material name</th>';
-		echo '<th>Material type</th>';
-		echo '<th>Quantity</th>';
-		echo '<th>Price</th>';
-		echo '<th>Unit</th>';
-		echo '<th></th>';
-		echo '</tr>';
 
 		include('add_sale_item.ctp');
 

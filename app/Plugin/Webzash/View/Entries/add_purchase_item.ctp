@@ -25,6 +25,10 @@ echo $this->Form->input('unit', array('name' => 'data[Purchase]['. $i .'][unit]'
 echo '</td>';
 
 echo '<td>';
+echo '<label id="material-'.$i.'" class="material-total"></label>';
+echo '</td>';
+
+echo '<td>';
 echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-trash')) . __d('webzash', ' Delete'), array('class' => 'deletePurchaseRow', 'escape' => false));
 echo '</td>';
 
