@@ -350,6 +350,8 @@ class EntriesController extends WebzashAppController {
 				}
 				if ($entrytypeLabel === 'sale' || $entrytypeLabel === 'purchase') {
 					$entrydata['Entry']['warehouse'] = $this->request->data['Entry']['warehouse'];
+				} else {
+					$entrydata['Entry']['warehouse'] = null;
 				}
 
 				/****** Check entry type *****/
@@ -735,9 +737,9 @@ class EntriesController extends WebzashAppController {
 				/***** Entry number ******/
 				$entrydata['Entry']['number'] = $this->request->data['Entry']['number'];
 
+				/***** Entry warehouse ******/
 				if ($entrytypeLabel == 'purchase' || $entrytypeLabel == 'sale') {
 
-					/***** Entry warehouse ******/
 					$entrydata['Entry']['warehouse'] = $this->request->data['Entry']['warehouse'];
 				}
 
