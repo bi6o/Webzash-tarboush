@@ -741,6 +741,8 @@ class EntriesController extends WebzashAppController {
 				if ($entrytypeLabel == 'purchase' || $entrytypeLabel == 'sale') {
 
 					$entrydata['Entry']['warehouse'] = $this->request->data['Entry']['warehouse'];
+				} else {
+					$entrydata['Entry']['warehouse'] = null;
 				}
 
 				/****** Entrytype remains the same *****/
