@@ -53,27 +53,28 @@ class StockList
 		$sales = $this->Sale->find('all');
 		$purchases = $this->Purchase->find('all');
 
-
 		foreach ($purchases as $purchase) {
 			$entry = $this->Entry->findById($purchase['Purchase']['entry_id']);
 
 			$flag = 0;
+			$sold  = 0;
 			foreach ($sales as $sale) {
 				if ($purchase['Purchase']['material_name'] == $sale['Sale']['material_name'] && $purchase['Purchase']['material_type'] == $sale['Sale']['material_type'] ) {
+					
 					$flag = 1;
-
 					$materialName = $purchase['Purchase']['material_name'];
 					$materialType = $purchase['Purchase']['material_type'];
-					$quantity = $purchase['Purchase']['quantity'] - $sale['Sale']['quantity'];
-
+					$sold = $sold + $sale['Sale']['quantity'];
 				}
 			}
+
 			if ($flag == 0){
 				$materialName = $purchase['Purchase']['material_name'];
 				$materialType = $purchase['Purchase']['material_type'];
 				$quantity = $purchase['Purchase']['quantity'];
-
-
+			}
+			else {
+				$quantity = $purchase['Purchase']['quantity'] - $sold;
 			}
 			$stockList[] = ['material_name' => $materialName, 'material_type' => $materialType ,'quantity' =>  $quantity , 'warehouse' => $entry['Entry']['warehouse']];
 		}
