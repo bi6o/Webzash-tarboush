@@ -252,11 +252,11 @@ $(document).ready(function() {
 		}
 	});
 
-	/* Add Purchase form */
-	$(document).on('click', '.addPurchaseItem', function() {
+	/* Add Material form */
+	$(document).on('click', '.addMaterialItem', function() {
 		var cur_obj = this;
 		$.ajax({
-			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "addPurchaseItem")); ?>',
+			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "addMaterialItem")); ?>',
 			success: function(data) {
 				$(cur_obj).after(data);
 			}
@@ -265,22 +265,10 @@ $(document).ready(function() {
 
 	});
 
-	$(document).on('click', '.deletePurchaseRow , .deleteSaleRow', function() {
+	$(document).on('click', '.deleteMaterialRow' , function() {
 		$(this).parent().parent().remove();
 	});
 
-	/* Add Sale form */
-	$(document).on('click', '.addSaleItem', function() {
-		var cur_obj = this;
-		$.ajax({
-			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "addSaleItem")); ?>',
-			success: function(data) {
-				$(cur_obj).after(data);
-			}
-		});
-
-
-	});
 
 	$('body').on('input', '.quantity , .price' , function() {
 		setInitialDrCr();
@@ -432,91 +420,46 @@ $(document).ready(function() {
 		echo '<th>Unit</th>';
 		echo '<th>Cash</th>';
 		echo '<th></th>';
-	}
 
 
-	// Purchases properties
-	if ($entrytype['Entrytype']['label'] === 'purchase'){
-
-		if ($purchases) {
-			foreach ($purchases as $row => $onePurchase) {
+		if ($materials) {
+			foreach ($materials as $row => $oneMaterial) {
 				echo '<tr>';
 
 				echo '<td>';
-				echo $this->Form->input('Purchase.' . $row . '.material_name', array('value' => $onePurchase['material_name'],'type' => 'text', 'label' => __d('webzash', ' ')));
+				echo $this->Form->input('Material.' . $row . '.material_name', array('value' => $oneMaterial['material_name'],'type' => 'text', 'label' => __d('webzash', ' ')));
 				echo '</td>';
 
 				echo '<td>';
-				echo $this->Form->input('Purchase.' . $row . '.material_type', array('value' => $onePurchase['material_type'],'type' => 'text', 'label' => __d('webzash', ' ')));
+				echo $this->Form->input('Material.' . $row . '.material_type', array('value' => $oneMaterial['material_type'],'type' => 'text', 'label' => __d('webzash', ' ')));
 				echo '</td>';
 
 				echo '<td>';
-				echo $this->Form->input('Purchase.' . $row . '.quantity', array('class' => 'form-control quantity','value' => $onePurchase['quantity'] ,'type' => 'number', 'label' => __d('webzash', ' ')));
+				echo $this->Form->input('Material.' . $row . '.quantity', array('class' => 'form-control quantity','value' => $oneMaterial['quantity'] ,'type' => 'number', 'label' => __d('webzash', ' ')));
 				echo '</td>';
 
 				echo '<td>';
-				echo $this->Form->input('Purchase.' . $row . '.price', array('class' => 'form-control price','value' => $onePurchase['price'],'type' => 'number', 'label' => __d('webzash', ' ')));
+				echo $this->Form->input('Material.' . $row . '.price', array('class' => 'form-control price','value' => $oneMaterial['price'],'type' => 'number', 'label' => __d('webzash', ' ')));
 				echo '</td>';
 
 				echo '<td>';
-				echo $this->Form->input('Purchase.' . $row . '.unit', array('value' => $onePurchase['unit'],'type' => 'text', 'label' => __d('webzash', ' ')));
+				echo $this->Form->input('Material.' . $row . '.unit', array('value' => $oneMaterial['unit'],'type' => 'text', 'label' => __d('webzash', ' ')));
 				echo '</td>';
 
 				echo '<td>';
-				echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-trash')) . __d('webzash', ' Delete'), array('class' => 'deletePurchaseRow', 'escape' => false));
+				echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-trash')) . __d('webzash', ' Delete'), array('class' => 'deleteMaterialRow', 'escape' => false));
 				echo '</td>';
 
 				echo '</tr>';
 			}
 		}
-		echo '<tr class="addPurchaseItem"><td>';
+		echo '<tr class="addMaterialItem"><td>';
 		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('escape' => false));
 		echo '</tr></td>';
 
 		echo '</table>';
 	}
 
-// Sales properties
-if ($entrytype['Entrytype']['label'] === 'sale'){
-
-	if ($sales) {
-
-		foreach ($sales as $row => $oneSale) {
-			echo '<tr>';
-
-			echo '<td>';
-			echo $this->Form->input('Sale.' . $row . '.material_name', array('value' => $oneSale['material_name'],'type' => 'text', 'label' => __d('webzash', ' ')));
-			echo '</td>';
-
-			echo '<td>';
-			echo $this->Form->input('Sale.' . $row . '.material_type', array('value' => $oneSale['material_type'],'type' => 'text', 'label' => __d('webzash', ' ')));
-			echo '</td>';
-
-			echo '<td>';
-			echo $this->Form->input('Sale.' . $row . '.quantity', array('class' => 'form-control quantity','value' => $oneSale['quantity'] ,'type' => 'number', 'label' => __d('webzash', ' ')));
-			echo '</td>';
-
-			echo '<td>';
-			echo $this->Form->input('Sale.' . $row . '.price', array('class' => 'form-control price','value' => $oneSale['price'],'type' => 'number', 'label' => __d('webzash', ' ')));
-			echo '</td>';
-
-			echo '<td>';
-			echo $this->Form->input('Sale.' . $row . '.unit', array('value' => $oneSale['unit'],'type' => 'text', 'label' => __d('webzash', ' ')));
-			echo '</td>';
-
-			echo '<td>';
-			echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-trash')) . __d('webzash', ' Delete'), array('class' => 'deleteSaleRow', 'escape' => false));
-			echo '</td>';
-
-			echo '</tr>';
-		}
-	}
-	echo '<tr class="addSaleItem"><td>';
-	echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('escape' => false));
-	echo '</tr></td>';
-
-	echo '</table>';
-}
 	echo $this->Form->input('date', array('type' => 'text', 'label' => __d('webzash', 'Date')));
 
 	echo '<table class="stripped extra">';

@@ -30,8 +30,7 @@
  */
 class StockList
 {
-	var $Sale = null;
-	var $Purchase = null;
+	var $Material = null;
 	var $Entry = null;
 	var $list = [];
 
@@ -50,31 +49,31 @@ class StockList
 	function initiateStock()
 	{
 		$stockList = [];
-		$sales = $this->Sale->find('all');
-		$purchases = $this->Purchase->find('all');
+		$sales = $this->Material->find('all' , array('conditions' => array('Material.is_purchase' => 0)));
+		$purchases = $this->Material->find('all' , array('conditions' => array('Material.is_purchase' => 1)));;
 
 		foreach ($purchases as $purchase) {
-			$entry = $this->Entry->findById($purchase['Purchase']['entry_id']);
-
+			$entry = $this->Entry->findById($purchase['Material']['entry_id']);
 			$flag = 0;
 			$sold  = 0;
+
 			foreach ($sales as $sale) {
-				if ($purchase['Purchase']['material_name'] == $sale['Sale']['material_name'] && $purchase['Purchase']['material_type'] == $sale['Sale']['material_type'] ) {
+				if ($purchase['Material']['material_name'] == $sale['Material']['material_name'] && $purchase['Material']['material_type'] == $sale['Material']['material_type'] ) {
 					
 					$flag = 1;
-					$materialName = $purchase['Purchase']['material_name'];
-					$materialType = $purchase['Purchase']['material_type'];
-					$sold = $sold + $sale['Sale']['quantity'];
+					$materialName = $purchase['Material']['material_name'];
+					$materialType = $purchase['Material']['material_type'];
+					$sold = $sold + $sale['Material']['quantity'];
 				}
 			}
 
 			if ($flag == 0){
-				$materialName = $purchase['Purchase']['material_name'];
-				$materialType = $purchase['Purchase']['material_type'];
-				$quantity = $purchase['Purchase']['quantity'];
+				$materialName = $purchase['Material']['material_name'];
+				$materialType = $purchase['Material']['material_type'];
+				$quantity = $purchase['Material']['quantity'];
 			}
 			else {
-				$quantity = $purchase['Purchase']['quantity'] - $sold;
+				$quantity = $purchase['Material']['quantity'] - $sold;
 			}
 			$stockList[] = ['material_name' => $materialName, 'material_type' => $materialType ,'quantity' =>  $quantity , 'warehouse' => $entry['Entry']['warehouse']];
 		}

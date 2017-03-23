@@ -267,7 +267,7 @@ $(document).ready(function() {
 		$('.cr-item:first').trigger('change');
 	});
 
-	$(document).on('click', '.deletePurchaseRow , .deleteSaleRow', function() {
+	$(document).on('click', '.deleteMaterialRow' , function() {
 		$(this).parent().parent().remove();
 	});
 
@@ -325,23 +325,10 @@ $(document).ready(function() {
 	}
 
 	/* Add Purchase form */
-	$(document).on('click', '.addPurchaseItem', function() {
+	$(document).on('click', '.addMaterialItem', function() {
 		var cur_obj = this;
 		$.ajax({
-			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "addPurchaseItem")); ?>',
-			success: function(data) {
-				$(cur_obj).after(data);
-			}
-		});
-
-
-	});
-
-	/* Add Sale form */
-	$(document).on('click', '.addSaleItem', function() {
-		var cur_obj = this;
-		$.ajax({
-			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "addSaleItem")); ?>',
+			url: '<?php echo $this->Html->url(array("controller" => "entries", "action" => "addMaterialItem")); ?>',
 			success: function(data) {
 				$(cur_obj).after(data);
 			}
@@ -442,33 +429,14 @@ $(document).ready(function() {
 		echo '<th>Total</th>';
 		echo '<th></th>';
 		echo '</tr>';
-	}
 
-	// Purchases table
-	if ($entrytype['Entrytype']['label'] === 'purchase'){
+		include('add_material_item.ctp');
 
-		include('add_purchase_item.ctp');
-
-		echo '<tr class="addPurchaseItem">';
+		echo '<tr class="addMaterialItem">';
 		echo '<td>';
 		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('escape' => false));
 		echo '</td>';
 		echo '</tr>';
-		echo '</table>';
-
-	}
-
-
-	// Sales table
-	if ($entrytype['Entrytype']['label'] === 'sale'){
-
-		include('add_sale_item.ctp');
-
-		echo '<tr class="addSaleItem"><td>';
-
-		echo $this->Html->tag('span', $this->Html->tag('i', '', array('class' => 'glyphicon glyphicon-plus')) . __d('webzash', ' Add'), array('escape' => false));
-		echo '</tr></td>';
-
 		echo '</table>';
 
 	}

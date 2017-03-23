@@ -88,61 +88,28 @@ $(document).ready(function() {
 	echo '<br /><br />';
 
 
-if (isset($purchases)) {
+if (isset($materials)) {
 	$total = 0.00;
 
 	echo '<div class="purchase-list col-xs-12 border">';
 
 	/* Purchases list */
-	foreach ($purchases as $row => $onePurchase) {
+	foreach ($materials as $row => $material) {
 
 		echo '<div class="purchase-container col-xs-2">';
 
-		$total += $onePurchase['price'] * $onePurchase['quantity'];
+		$total += $material['price'] * $material['quantity'];
 
-		echo __d('webzash', 'Material name') . ' : ' . h($onePurchase['material_name']);
+		echo __d('webzash', 'Material name') . ' : ' . h($material['material_name']);
 		echo '<br /><br />';
 
-		echo __d('webzash', 'Material type') . ' : ' . h($onePurchase['material_type']);
+		echo __d('webzash', 'Material type') . ' : ' . h($material['material_type']);
 		echo '<br /><br />';
-		echo __d('webzash', 'Quantity') . ' : ' . h($onePurchase['quantity']);
+		echo __d('webzash', 'Quantity') . ' : ' . h($material['quantity']);
 		echo '<br /><br />';
-		echo __d('webzash', 'Price') . ' : ' . h($onePurchase['price'])  . ' (' . Configure::read('Account.currency_symbol') . ')';
+		echo __d('webzash', 'Price') . ' : ' . h($material['price'])  . ' (' . Configure::read('Account.currency_symbol') . ')';
 		echo '<br /><br />';
-		echo __d('webzash', 'Unit') . ' : ' . h($onePurchase['unit']);
-		echo '<br /><br />';
-
-		echo '</div>';
-
-	}
-	echo '<br /><br />';
-
-	echo '</div>';
-
-}
-
-if (isset($sales)){
-	$total = 0.00;
-
-	echo '<div class="purchase-list col-xs-12 border">';
-
-	/* Purchases list */
-	foreach ($sales as $row => $oneSale) {
-
-		echo '<div class="purchase-container col-xs-2">';
-
-		$total += $oneSale['price'] * $oneSale['quantity'];
-
-		echo __d('webzash', 'Material name') . ' : ' . h($oneSale['material_name']);
-		echo '<br /><br />';
-
-		echo __d('webzash', 'Material type') . ' : ' . h($oneSale['material_type']);
-		echo '<br /><br />';
-		echo __d('webzash', 'Quantity') . ' : ' . h($oneSale['quantity']);
-		echo '<br /><br />';
-		echo __d('webzash', 'Price') . ' : ' . h($oneSale['price'])  . ' (' . Configure::read('Account.currency_symbol') . ')';
-		echo '<br /><br />';
-		echo __d('webzash', 'Unit') . ' : ' . h($oneSale['unit']);
+		echo __d('webzash', 'Unit') . ' : ' . h($material['unit']);
 		echo '<br /><br />';
 
 		echo '</div>';
